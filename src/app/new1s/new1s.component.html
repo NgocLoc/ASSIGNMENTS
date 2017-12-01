@@ -1,0 +1,188 @@
+<div class="container">
+    <br/>
+    <br/>
+    <span>
+      <h1 class="header" style="text-align: center">
+        <strong> NEWS</strong>
+      </h1>
+    </span>
+    <div class="row">
+      <div class=" col-md-6">
+        <button class="btn btn-success" data-toggle="modal" data-target="#createModal">Add new</button>
+      </div>
+      <!-- <div class="col-md-6 form-inline">
+        Search teacher name:
+        <input type="search" placeholder="search" class="form-control" [formControl]="searchControl">
+      </div> -->
+    </div>
+    <br/>
+    <table class="table table-striped table-hover">
+      <tr>
+        <th>No.</th>
+        <th>ID</th>
+        <th>Titel</th>
+        <th>Image</th>
+        <th>Description</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+      <tr *ngFor="let new1 of new1s; index as i; trackBy: trackByStudent">
+        <td>{{i+1}}</td>
+        <td>{{new1.idteacher}}</td>
+        <td>{{new1.titel}}</td>
+        <td>{{new1.image}}</td>
+        <td>{{new1.description}}</td>
+        <!-- <td>
+          <button class="btn btn-primary glyphicon glyphicon-edit" data-toggle="modal" data-target="#viewModal" (click)="view(teacher)"></button>
+        </td> -->
+        <!-- <td>
+          <button class="btn btn-success glyphicon glyphicon-edit" routerLink="/graduates/{{student.idstudent}}"></button>
+          <td> -->
+        <td>
+          <button class="btn btn-danger glyphicon glyphicon-edit" data-toggle="modal" data-target="#updateModal" (click)="edit(new1)"></button>
+        </td>
+        <td>
+          <!-- <button class="btn btn-danger glyphicon glyphicon-remove-circle" (click)="delete(student.idstudent); $event.stopPropagation()"></button> -->
+          <button type="button" class="btn btn-danger glyphicon glyphicon-remove-circle" data-toggle="modal" data-target="#deleteModal"
+            (click)="delete(new1.idnew1)"></button>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <!-- create model -->
+  <div class="modal fade" id="createModal" role="dialog">
+    <div class="modal-dialog">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h2 style="text-align: center">
+            <b class="modal-title"> INPUT NEW </b>
+          </h2>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="createNew1" class="form-horizontal form-label-left">
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">Titel </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" class="form-control col-md-7 col-xs-12" formControlName="titel" name="titel" id="titel" placeholder="Your titel"
+                  required>
+                <br/>
+                <div class="col-md-12 col-xs-12 alert alert-danger" role="alert" *ngIf="createNew1.get('titel')?.errors?.required && createNew1.get('titel')?.touched">titel is required</div>
+                <div class="col-md-12 col-xs-12 alert alert-danger" role="alert" *ngIf="createNew1.get('titel')?.errors?.maxlength">titel is max length 100</div>
+                <div class="col-md-12 col-xs-12 alert alert-danger" role="alert" *ngIf="createNew1.get('titel')?.errors?.minlength">titel is min length 2</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">Image </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <input type="text" class="form-control col-md-7 col-xs-12" formControlName="image" name="image" id="image" placeholder="Your image"
+                  required>
+                <br/>
+                <div class="col-md-12 col-xs-12 alert alert-danger" role="alert" *ngIf="createNew1.get('image')?.errors?.required && createNew1.get('image')?.touched">image is required</div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12">Description </label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <textarea type="text" class="form-control col-md-7 col-xs-12" formControlName="description" name="description" id="description" placeholder="Your description"
+                  required></textarea>
+                <br/>
+                <div class="col-md-12 col-xs-12 alert alert-danger" role="alert" *ngIf="createNew1.get('description')?.errors?.required && createNew1.get('description')?.touched">description is required</div>
+              </div>
+            </div>
+            <div class="ln_solid"></div>
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <button type="submit" class="btn btn-success" [disabled]="createNew1.invalid" data-dismiss="modal" (click)="onCreate()">
+                  Add </button>
+                <button type="reset" class="btn btn-primary" [disabled]="createNew1.get('titel')?.errors?.required">
+                  Reset </button>
+                <button type="button" class="btn btn-danger btn-default" data-dismiss="modal"> Close </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Update Modal -->
+  <div class="modal fade" id="updateModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h2 style="text-align: center">
+            <b class="modal-title"> UPDATE NEW </b>
+          </h2>
+        </div>
+        <div class="modal-body" *ngIf="updateNew1">
+          <form class="form-horizontal form-label-left" [formGroup]="updateNew1">
+            <input type="hidden" formControlName="idnew1" name="idnew1" id="idnew1" />
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Titel </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" class="form-control col-md-7 col-xs-12" formControlName="titel" name="titel" id="titel" placeholder="Your titel"
+                    required>
+                  <br/>
+                  <div class="col-md-12 col-xs-12 alert alert-danger" role="alert" *ngIf="updateNew1.get('titel')?.errors?.required && updateNew1.get('titel')?.touched">titel is required</div>
+                  <div class="col-md-12 col-xs-12 alert alert-danger" role="alert" *ngIf="updateNew1.get('titel')?.errors?.maxlength">titel is max length 100</div>
+                  <div class="col-md-12 col-xs-12 alert alert-danger" role="alert" *ngIf="updateNew1.get('titel')?.errors?.minlength">titel is min length 2</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Image </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <input type="text" class="form-control col-md-7 col-xs-12" formControlName="image" name="image" id="image" placeholder="Your image"
+                    required>
+                  <br/>
+                  <div class="col-md-12 col-xs-12 alert alert-danger" role="alert" *ngIf="updateNew1.get('image')?.errors?.required && updateNew1.get('image')?.touched">image is required</div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">Description </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                  <textarea type="text" class="form-control col-md-7 col-xs-12" formControlName="description" name="description" id="description" placeholder="Your description"
+                    required></textarea>
+                  <br/>
+                  <div class="col-md-12 col-xs-12 alert alert-danger" role="alert" *ngIf="updateNew1.get('description')?.errors?.required && updateNew1.get('description')?.touched">description is required</div>
+                </div>
+              </div>
+            <div class="ln_solid"></div>
+            <div class="form-group">
+              <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+              <div class="col-md-6 col-sm-6 col-xs-12">
+                <button type="submit" class="btn btn-success" [disabled]="updateTeacher.invalid" data-dismiss="modal" (click)="onUpdate()">
+                  Update </button>
+                <button type="reset" class="btn btn-primary" [disabled]="updateTeacher.get('name')?.errors?.required">
+                  Reset </button>
+                <button type="button" class="btn btn-danger btn-default" data-dismiss="modal"> Cancel </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="modal fade" id="deleteModal" role="dialog">
+      <div class="modal-dialog">
+    
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h3 class="modal-title" style="text-align: center">
+              <b class="modal-title">Are you sure you want to delete!!</b>
+            </h3>
+          </div>
+          <div class="modal-body">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" (click)="confirmDelete()">YES</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">NO</button>
+          </div>
+        </div>
+      </div>
+    </div>
